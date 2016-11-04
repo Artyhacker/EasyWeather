@@ -62,16 +62,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.receive_btn){
-            if(cityNameEdit.getText().toString().isEmpty()){
+            /*if(cityNameEdit.getText().toString().isEmpty()){
                 Toast.makeText(mContext,"请输入城市名！",Toast.LENGTH_SHORT).show();
                 return;
-            }
+            }*/
             String urlString = "";
             try {
-                urlString = "https://api.thinkpage.cn/v3/weather/now.json?key="
-                        + KEY + "&location="
-                        + URLEncoder.encode(cityNameEdit.getText().toString(), "UTF-8")
-                        + "&language=zh-Hans&unit=c";
+                if(!cityNameEdit.getText().toString().isEmpty()) {
+                    urlString = "https://api.thinkpage.cn/v3/weather/now.json?key="
+                            + KEY + "&location="
+                            + URLEncoder.encode(cityNameEdit.getText().toString(), "UTF-8")
+                            + "&language=zh-Hans&unit=c";
+                } else {
+                    urlString = "https://api.thinkpage.cn/v3/weather/now.json?key="
+                            + KEY + "&location="
+                            + "ip"
+                            + "&language=zh-Hans&unit=c";
+                }
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -133,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void run() {
                     cityName.setText("城市： " + cityNameString);
                     weatherText.setText("天气： " + weatherTextString);
-                    temperature.setText("温度： " + temperatureString);
+                    temperature.setText("温度： " + temperatureString + "度");
                     lastUpdate.setText("上次更新： " + lastUpdateString);
                     closeProgressDialog();
                 }
