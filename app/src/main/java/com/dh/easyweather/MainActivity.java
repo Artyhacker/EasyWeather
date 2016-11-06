@@ -2,16 +2,16 @@ package com.dh.easyweather;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -24,6 +24,7 @@ import java.net.URLEncoder;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final static String KEY = "3whssd4a4b7jrimf";
+    //private final static String[] CITYARRAY = {"济南", "太原", "北京"};
 
     private TextView cityName;
     private TextView weatherText;
@@ -37,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tomorrowTemperature;
     private TextView afterTomorrowWeather;
     private TextView afterTomorrowTemperature;
+    private CheckBox autoCheckBox;
+
+    //private AutoCompleteTextView autoCompleteTextView;
 
     private Context mContext;
     private ProgressDialog progressDialog;
@@ -78,12 +82,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tomorrowTemperature = (TextView) findViewById(R.id.tomorrow_temperature);
         afterTomorrowWeather = (TextView) findViewById(R.id.aftertomorrow_weather_text);
         afterTomorrowTemperature = (TextView) findViewById(R.id.aftertomorrow_temperature);
+        autoCheckBox = (CheckBox) findViewById(R.id.auto_check_box);
+        //autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.auto_complete_text);
+        //ArrayAdapter textViewAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,CITYARRAY);
+        //autoCompleteTextView.setAdapter(textViewAdapter);
 
         receiveBtn.setOnClickListener(this);
+        SharedPreferences sp = getSharedPreferences("weather", MODE_PRIVATE);
+        boolean autoChecked = sp.getBoolean("autoChecked",false);
+        if(autoChecked) {
+            autoCheckBox.setChecked(true);
+            receiveBtn.performClick();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        if(autoCheckBox.isChecked()){
+            SharedPreferences.Editor editor = getSharedPreferences("weather", MODE_PRIVATE).edit();
+            editor.putBoolean("autoChecked",true);
+            editor.commit();
+        } else {
+            SharedPreferences.Editor editor = getSharedPreferences("weather", MODE_PRIVATE).edit();
+            editor.putBoolean("autoChecked",false);
+            editor.commit();
+        }
+        super.onPause();
     }
 
     @Override
     public void onClick(View view) {
+
+
+
         if(view.getId() == R.id.receive_btn){
             String urlNowString = "";
             String urlDailyString = "";
@@ -213,12 +244,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             afterTomorrowNightWeatherString = afterTomorrow.getString("text_night");
             afterTomorrowTemperatureHigh = afterTomorrow.getString("high");
             afterTomorrowTemperatureLow = afterTomorrow.getString("low");
-            Log.d("MainActivity", "明天的天气是" + tomorrowDayWeatherString + " 转 "
+            /*Log.d("MainActivity", "明天的天气是" + tomorrowDayWeatherString + " 转 "
                     + tomorrowNightWeatherString + "; 明天的气温是 " + tomorrowTemperatureLow
                     + "度 - " + tomorrowTemperatureHigh + "度");
             Log.d("MainActivity", "后天的天气是" + afterTomorrowDayWeatherString + " 转 "
                     + afterTomorrowNightWeatherString + "; 后天的气温是 " + afterTomorrowTemperatureLow
-                    + "度 - " + afterTomorrowTemperatureHigh + "度");
+                    + "度 - " + afterTomorrowTemperatureHigh + "度");*/
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

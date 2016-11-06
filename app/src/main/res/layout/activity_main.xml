@@ -10,19 +10,40 @@
         android:layout_height="wrap_content"
         android:id="@+id/city_name_edit"
         android:hint="请输入城市名,留空快速查询本地"/>
+
+
+    <!--<AutoCompleteTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/auto_complete_text"
+        android:hint="请输入城市名,留空快速查询本地"
+        android:completionThreshold="1"/>-->
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/receive_btn"
         android:text="查询"
         android:layout_marginBottom="10dp"/>
-    <TextView
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="城市："
-        android:textSize="30dp"
-        android:layout_marginBottom="15dp"
-        android:id="@+id/city_name_id"/>
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="城市："
+            android:textSize="30dp"
+            android:layout_marginBottom="15dp"
+            android:id="@+id/city_name_id"/>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="自动查询"
+            android:layout_marginRight="10dp"
+            android:id="@+id/auto_check_box"
+            android:textSize="15dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"
