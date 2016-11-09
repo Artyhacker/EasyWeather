@@ -24,7 +24,6 @@ import java.net.URLEncoder;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final static String KEY = "3whssd4a4b7jrimf";
-    //private final static String[] CITYARRAY = {"济南", "太原", "北京"};
 
     private TextView cityName;
     private TextView weatherText;
@@ -38,7 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tomorrowTemperature;
     private TextView afterTomorrowWeather;
     private TextView afterTomorrowTemperature;
-    private CheckBox autoCheckBox;
+    //private CheckBox autoCheckBox;
+    private CheckBox isDefaultCheckBox;
 
     //private AutoCompleteTextView autoCompleteTextView;
 
@@ -82,7 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tomorrowTemperature = (TextView) findViewById(R.id.tomorrow_temperature);
         afterTomorrowWeather = (TextView) findViewById(R.id.aftertomorrow_weather_text);
         afterTomorrowTemperature = (TextView) findViewById(R.id.aftertomorrow_temperature);
-        autoCheckBox = (CheckBox) findViewById(R.id.auto_check_box);
+        //autoCheckBox = (CheckBox) findViewById(R.id.auto_check_box);
+        isDefaultCheckBox = (CheckBox) findViewById(R.id.isdefault_check_box);
         //autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.auto_complete_text);
         //ArrayAdapter textViewAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,CITYARRAY);
         //autoCompleteTextView.setAdapter(textViewAdapter);
@@ -91,18 +92,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences sp = getSharedPreferences("weather", MODE_PRIVATE);
         boolean autoChecked = sp.getBoolean("autoChecked",false);
         if(autoChecked) {
-            autoCheckBox.setChecked(true);
-            receiveBtn.performClick();
+            isDefaultCheckBox.setChecked(true);
+            String defaultAddress = sp.getString("address","");
+            cityNameEdit.setText(defaultAddress);
         }
+        receiveBtn.performClick();
     }
 
     @Override
     protected void onPause() {
-        if(autoCheckBox.isChecked()){
+        if(isDefaultCheckBox.isChecked()){
             SharedPreferences.Editor editor = getSharedPreferences("weather", MODE_PRIVATE).edit();
-            editor.putBoolean("autoChecked",true);
+            editor.putString("address",cityNameEdit.getText().toString());
+            editor.putBoolean("autoChecked", true);
             editor.commit();
-        } else {
+        }
+        else {
             SharedPreferences.Editor editor = getSharedPreferences("weather", MODE_PRIVATE).edit();
             editor.putBoolean("autoChecked",false);
             editor.commit();
@@ -112,9 +117,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-
-
-
         if(view.getId() == R.id.receive_btn){
             String urlNowString = "";
             String urlDailyString = "";
@@ -204,9 +206,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    cityName.setText("城市： " + cityNameString);
-                    weatherText.setText("实时天气： " + weatherTextString);
-                    temperature.setText("实时温度： " + temperatureString + "度");
+                    //cityName.setText("城市： " + cityNameString);
+                    cityName.setText(cityNameString);
+                    //weatherText.setText("实时天气： " + weatherTextString);
+                    weatherText.setText(weatherTextString);
+                    temperature.setText(temperatureString + "°");
+                    //temperature.setText("实时温： " + temperatureString + "");
                     //lastUpdate.setText("上次更新： " + lastUpdateString);
                     closeProgressDialog();
                 }
@@ -235,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             todayTemperatureLow = today.getString("low");
             /*Log.d("MainActivity", "今天的天气是" + todayDayWeatherString + " 转 "
                     + todayNightWeatherString + "; 今天的气温是 " + todayTemperatureLow
-                    + "度 - " + todayTemperatureHigh + "度");*/
+                    + " - " + todayTemperatureHigh + "");*/
             tomorrowDayWeatherString = tomorrow.getString("text_day");
             tomorrowNightWeatherString = tomorrow.getString("text_night");
             tomorrowTemperatureHigh = tomorrow.getString("high");
@@ -246,36 +251,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             afterTomorrowTemperatureLow = afterTomorrow.getString("low");
             /*Log.d("MainActivity", "明天的天气是" + tomorrowDayWeatherString + " 转 "
                     + tomorrowNightWeatherString + "; 明天的气温是 " + tomorrowTemperatureLow
-                    + "度 - " + tomorrowTemperatureHigh + "度");
+                    + " - " + tomorrowTemperatureHigh + "");
             Log.d("MainActivity", "后天的天气是" + afterTomorrowDayWeatherString + " 转 "
                     + afterTomorrowNightWeatherString + "; 后天的气温是 " + afterTomorrowTemperatureLow
-                    + "度 - " + afterTomorrowTemperatureHigh + "度");*/
+                    + " - " + afterTomorrowTemperatureHigh + "");*/
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     if(!todayDayWeatherString.equals(todayNightWeatherString)) {
-                        todayWeather.setText("今天天气：" + todayDayWeatherString + " 转 "
+                        todayWeather.setText(todayDayWeatherString + " 转 "
                                 + todayNightWeatherString);
                     } else
-                        todayWeather.setText("今天天气：" + todayDayWeatherString);
-                    todayTemperature.setText("今天气温：" + todayTemperatureLow + "度-"
-                            + todayTemperatureHigh + "度");
+                        todayWeather.setText(todayDayWeatherString);
+                    todayTemperature.setText(todayTemperatureLow + " ~ "
+                            + todayTemperatureHigh);
 
                     if(!tomorrowDayWeatherString.equals(tomorrowNightWeatherString)) {
-                        tomorrowWeather.setText("明天天气：" + tomorrowDayWeatherString + " 转 "
+                        tomorrowWeather.setText(tomorrowDayWeatherString + " 转 "
                                 + tomorrowNightWeatherString);
                     } else
-                        tomorrowWeather.setText("明天天气：" + tomorrowDayWeatherString);
-                    tomorrowTemperature.setText("明天气温：" + tomorrowTemperatureLow + "度-"
-                            + tomorrowTemperatureHigh + "度");
+                        tomorrowWeather.setText(tomorrowDayWeatherString);
+                    tomorrowTemperature.setText(tomorrowTemperatureLow + " ~ "
+                            + tomorrowTemperatureHigh);
 
                     if(!afterTomorrowDayWeatherString.equals(afterTomorrowNightWeatherString)) {
-                        afterTomorrowWeather.setText("后天天气：" + afterTomorrowDayWeatherString + " 转 "
+                        afterTomorrowWeather.setText(afterTomorrowDayWeatherString + " 转 "
                                 + afterTomorrowNightWeatherString);
                     } else
-                        afterTomorrowWeather.setText("后天天气：" + afterTomorrowDayWeatherString);
-                    afterTomorrowTemperature.setText("后天气温：" + afterTomorrowTemperatureLow + "度-"
-                            + afterTomorrowTemperatureHigh + "度");
+                        afterTomorrowWeather.setText(afterTomorrowDayWeatherString);
+                    afterTomorrowTemperature.setText(afterTomorrowTemperatureLow + " ~ "
+                            + afterTomorrowTemperatureHigh);
                 }
             });
         } catch (Exception e) {

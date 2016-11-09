@@ -5,99 +5,146 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/city_name_edit"
-        android:hint="请输入城市名,留空快速查询本地"/>
 
 
-    <!--<AutoCompleteTextView
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/auto_complete_text"
-        android:hint="请输入城市名,留空快速查询本地"
-        android:completionThreshold="1"/>-->
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/receive_btn"
-        android:text="查询"
-        android:layout_marginBottom="10dp"/>
+        android:text="城市"
+        android:layout_gravity="center_horizontal"
+        android:textSize="40sp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="15dp"
+        android:id="@+id/city_name_id"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="城市："
-            android:textSize="30dp"
-            android:layout_marginBottom="15dp"
-            android:id="@+id/city_name_id"/>
+            android:layout_centerHorizontal="true"
+            android:text="3°"
+            android:textSize="60sp"
+            android:id="@+id/temperature_id"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="小雨"
+            android:paddingTop="40dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/temperature_id"
+            android:textSize="20sp"
+            android:id="@+id/weather_text_id"/>
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp">
+
+        <TextView
+            style="@style/TemperatureText"
+            android:paddingLeft="20dp"
+            android:text="今天"/>
+        <TextView
+            android:id="@+id/today_weather_text"
+            style="@style/TemperatureText"
+            />
+        <TextView
+            android:id="@+id/today_temperature"
+            style="@style/TemperatureText"
+            android:paddingLeft="15dp"
+            android:gravity="center_horizontal"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp">
+
+        <TextView
+            style="@style/TemperatureText"
+            android:paddingLeft="20dp"
+            android:text="明天"/>
+        <TextView
+            android:id="@+id/tomorrow_weather_text"
+            style="@style/TemperatureText"
+            />
+        <TextView
+            android:id="@+id/tomorrow_temperature"
+            style="@style/TemperatureText"
+            android:paddingLeft="15dp"
+            android:gravity="center_horizontal"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp">
+
+        <TextView
+            style="@style/TemperatureText"
+            android:paddingLeft="20dp"
+            android:text="后天"/>
+        <TextView
+            android:id="@+id/aftertomorrow_weather_text"
+            style="@style/TemperatureText"
+            />
+        <TextView
+            android:id="@+id/aftertomorrow_temperature"
+            style="@style/TemperatureText"
+            android:paddingLeft="15dp"
+            android:gravity="center_horizontal"
+            />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp">
+        <EditText
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/city_name_edit"
+            android:lines="1"
+            android:hint="城市名,留空快速查询本地"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="自动查询"
+            android:text="设为默认"
             android:layout_marginRight="10dp"
-            android:id="@+id/auto_check_box"
+            android:id="@+id/isdefault_check_box"
             android:textSize="15dp"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="实时天气："
-        android:textSize="25dp"
-        android:id="@+id/weather_text_id"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="实时温度："
-        android:textSize="25dp"
-        android:layout_marginBottom="15dp"
-        android:id="@+id/temperature_id"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="今天天气："
-        android:textSize="25dp"
-        android:id="@+id/today_weather_text"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="今天温度："
-        android:textSize="25dp"
-        android:id="@+id/today_temperature"
-        android:layout_marginBottom="15dp"/>
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="80dp"
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="明天天气："
-        android:textSize="25dp"
-        android:id="@+id/tomorrow_weather_text"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="明天温度："
-        android:textSize="25dp"
-        android:id="@+id/tomorrow_temperature"
-        android:layout_marginBottom="15dp"/>
+        android:id="@+id/receive_btn"
+        android:layout_gravity="center"
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="后天天气："
-        android:textSize="25dp"
-        android:id="@+id/aftertomorrow_weather_text"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="后天温度："
-        android:textSize="25dp"
-        android:id="@+id/aftertomorrow_temperature"/>
+        android:textSize="50sp"
+        android:textColor="#000090"
+        android:background="@mipmap/btn_search"
+        />
+
 
 </LinearLayout>
