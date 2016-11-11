@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -21,7 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnKeyListener {
 
     private final static String KEY = "3whssd4a4b7jrimf";
 
@@ -87,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.auto_complete_text);
         //ArrayAdapter textViewAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,CITYARRAY);
         //autoCompleteTextView.setAdapter(textViewAdapter);
+
+        cityNameEdit.setOnKeyListener(this);
 
         receiveBtn.setOnClickListener(this);
         SharedPreferences sp = getSharedPreferences("weather", MODE_PRIVATE);
@@ -301,4 +305,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             progressDialog.dismiss();
     }
 
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
+            //修改回车键功能
+            ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                    .hideSoftInputFromWindow(MainActivity.this.getCurrentFocus().getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+            receiveBtn.callOnClick();
+        }
+        return false;
+    }
 }
