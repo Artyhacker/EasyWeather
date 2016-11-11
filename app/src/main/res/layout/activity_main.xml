@@ -3,7 +3,8 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@mipmap/bg">
 
 
 
@@ -121,7 +122,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/city_name_edit"
-            android:lines="1"
+            android:maxLines="1"
             android:hint="城市名,留空快速查询本地"/>
         <CheckBox
             android:layout_width="wrap_content"
@@ -143,7 +144,7 @@
 
         android:textSize="50sp"
         android:textColor="#000090"
-        android:background="@mipmap/btn_search"
+        android:background="@drawable/ic_cloud_download_black_24dp"
         />
 
 
