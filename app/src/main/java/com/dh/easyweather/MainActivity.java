@@ -1,10 +1,14 @@
 package com.dh.easyweather;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -42,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //private CheckBox autoCheckBox;
     private CheckBox isDefaultCheckBox;
 
+    private Button btnAuthorInfo;
+    private Button btnAuthorGithub;
+    private Button btnAuthorWeibo;
+
     //private AutoCompleteTextView autoCompleteTextView;
 
     private Context mContext;
@@ -63,10 +71,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String afterTomorrowTemperatureHigh = "";
     private String afterTomorrowTemperatureLow = "";
 
-    private String response = "";
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,11 +88,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tomorrowTemperature = (TextView) findViewById(R.id.tomorrow_temperature);
         afterTomorrowWeather = (TextView) findViewById(R.id.aftertomorrow_weather_text);
         afterTomorrowTemperature = (TextView) findViewById(R.id.aftertomorrow_temperature);
-        //autoCheckBox = (CheckBox) findViewById(R.id.auto_check_box);
         isDefaultCheckBox = (CheckBox) findViewById(R.id.isdefault_check_box);
-        //autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.auto_complete_text);
-        //ArrayAdapter textViewAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,CITYARRAY);
-        //autoCompleteTextView.setAdapter(textViewAdapter);
+        btnAuthorInfo = (Button) findViewById(R.id.btn_author_info);
+        btnAuthorInfo.setOnClickListener(this);
+        btnAuthorGithub = (Button) findViewById(R.id.btn_author_github);
+        btnAuthorWeibo = (Button) findViewById(R.id.btn_author_zhihu);
 
         cityNameEdit.setOnKeyListener(this);
 
@@ -149,6 +153,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             showProgressDialog();
             sendHttpRequest(urlNowString, urlDailyString);
+        }else if(view.getId() == R.id.btn_author_info){
+            Dialog dialog = new Dialog(mContext);
+            dialog.setTitle("关于作者");
+            dialog.setCanceledOnTouchOutside(true);
+            dialog.setCancelable(true);
+            View dialogView = View.inflate(mContext,R.layout.author_info,null);
+            dialog.setContentView(dialogView);
+            dialog.findViewById(R.id.btn_author_github).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Artyhacker"));
+                        startActivity(intent);
+                }
+            });
+            dialog.findViewById(R.id.btn_author_zhihu).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.zhihu.com/people/artyhacker"));
+                    startActivity(intent);
+                }
+            });
+            dialog.show();
         }
     }
 
@@ -159,7 +185,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String responseNow = urlToString(urlNowString);
                 parseNowJSON(responseNow);
                 String responseDaily = urlToString(urlDailyString);
-                //Log.d("MainActivity", responseDaily);
                 parseDailyJSON(responseDaily);
             }
         }).start();
@@ -204,19 +229,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             cityNameString = location.getString("name");
             weatherTextString = now.getString("text");
             temperatureString = now.getString("temperature");
-            //Log.d("MainActivity",cityNameString + "---" + weatherTextString + "---"
-                    //+ temperatureString + "---" + lastUpdateString);
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    //cityName.setText("城市： " + cityNameString);
                     cityName.setText(cityNameString);
-                    //weatherText.setText("实时天气： " + weatherTextString);
                     weatherText.setText(weatherTextString);
                     temperature.setText(temperatureString + "°");
-                    //temperature.setText("实时温： " + temperatureString + "");
-                    //lastUpdate.setText("上次更新： " + lastUpdateString);
                     closeProgressDialog();
                 }
             });
@@ -232,19 +251,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             JSONObject results = jsonObject.getJSONArray("results").getJSONObject(0);
             //Log.d("MainActivity", results.toString());
             JSONArray daily = results.getJSONArray("daily");
-            //Log.d("MainActivity", daily.toString());
             JSONObject today = daily.getJSONObject(0);
             JSONObject tomorrow = daily.getJSONObject(1);
             JSONObject afterTomorrow = daily.getJSONObject(2);
-            //Log.d("MainActivity","today: " + today.toString() + "--- tomorrow: "
-            //        + tomorrow.toString() + "--- afterTomorrow: " + afterTomorrow.toString());
             todayDayWeatherString = today.getString("text_day");
             todayNightWeatherString = today.getString("text_night");
             todayTemperatureHigh = today.getString("high");
             todayTemperatureLow = today.getString("low");
-            /*Log.d("MainActivity", "今天的天气是" + todayDayWeatherString + " 转 "
-                    + todayNightWeatherString + "; 今天的气温是 " + todayTemperatureLow
-                    + " - " + todayTemperatureHigh + "");*/
             tomorrowDayWeatherString = tomorrow.getString("text_day");
             tomorrowNightWeatherString = tomorrow.getString("text_night");
             tomorrowTemperatureHigh = tomorrow.getString("high");
@@ -253,12 +266,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             afterTomorrowNightWeatherString = afterTomorrow.getString("text_night");
             afterTomorrowTemperatureHigh = afterTomorrow.getString("high");
             afterTomorrowTemperatureLow = afterTomorrow.getString("low");
-            /*Log.d("MainActivity", "明天的天气是" + tomorrowDayWeatherString + " 转 "
-                    + tomorrowNightWeatherString + "; 明天的气温是 " + tomorrowTemperatureLow
-                    + " - " + tomorrowTemperatureHigh + "");
-            Log.d("MainActivity", "后天的天气是" + afterTomorrowDayWeatherString + " 转 "
-                    + afterTomorrowNightWeatherString + "; 后天的气温是 " + afterTomorrowTemperatureLow
-                    + " - " + afterTomorrowTemperatureHigh + "");*/
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -316,4 +323,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return false;
     }
+
+
 }

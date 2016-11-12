@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="artyhacker@outlook.com\n欢迎提出宝贵意见"
+        android:id="@+id/tv_author_info" />
+
+    <Button
+        android:id="@+id/btn_author_github"
+        android:layout_marginBottom="10dp"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_author_info"
+        android:text="GitHub" />
+    <Button
+        android:id="@+id/btn_author_zhihu"
+        android:layout_marginBottom="10dp"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_author_info"
+        android:text="Zhihu"
+        android:layout_toRightOf="@id/btn_author_github"/>
+</RelativeLayout>
